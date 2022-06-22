@@ -3,6 +3,10 @@ from sklearn.metrics import confusion_matrix, precision_score
 from config import config
 import pandas as pd
 import xgboost as xgb
+import pickle
+
+X_col = ["Name10", "Name11", "Name20", "Name21", "Name30", "Name31"]
+y_col = ["Gender"]
 
 def split_test(df_DB):
     """
@@ -24,7 +28,7 @@ def split_test(df_DB):
 
     return strat_train_set, strat_test_set
 
-def learn(train_set, test_set, param, num_round):
+def learn(train_set, param, num_round):
     """
     学習する関数
     :param train_set: 訓練セット
@@ -32,9 +36,7 @@ def learn(train_set, test_set, param, num_round):
     :return: 学習済みモデル
     """
     #データのXY分割
-    X_col = ["Name10", "Name11", "Name20", "Name21", "Name30", "Name31"]
-    y_col = ["Gender"]
-    X_train, X_test, y_train, y_test = train_set[X_col], test_set[X_col], train_set[y_col], test_set[y_col]
+    X_train, y_train = train_set[X_col], train_set[y_col]
     X_train, X_valid, y_train, y_valid = train_test_split(X_train, y_train, test_size=0.1) #validデータの分割
 
     #XGBoostによる学習
@@ -45,12 +47,32 @@ def learn(train_set, test_set, param, num_round):
     print('Best Score:{0:.4f}, Iteratin:{1:d}, Ntree_Limit:{2:d}'.format(
      bst.best_score, bst.best_iteration, bst.best_ntree_limit))
 
-    #テスト
+    return bst
+
+def test_model(bst, test_set):
+    """
+    モデルテスト関数
+    :param bst: XGBoostモデル
+    :return: conf_ma, prec_score 混同行列と適合率
+    """
+    # データのXY分割
+    X_test, y_test = test_set[X_col], test_set[y_col]
+
+    #テストと成績の出力
     dtest = xgb.DMatrix(X_test)
     pred = bst.predict(dtest, ntree_limit=bst.best_ntree_limit)
     conf_ma = confusion_matrix(y_test, pred)
     prec_score = precision_score(y_test, pred)
     return conf_ma, prec_score
+
+def save_model(bst, path):
+    """
+    モデルをpickleに保存する関数
+    :param bst: XGBoostモデル
+    :param path: 保存先フォルダ
+    :return: モデルがpickleに保存される
+    """
+    pickle.dump(bst, open(path+"model.pickle", "wb"))
 
 if __name__ == "__main__":
     file = config(0)    #設定
@@ -62,7 +84,9 @@ if __name__ == "__main__":
     for num_round in num_rounds:
         for parname in param:
             print(parname)
-            mat, score = learn(train_set, test_set, param[parname], num_round)
+#            mat, score = learn(train_set, param[parname], num_round)
+            model = learn(train_set, param[parname], num_round) #モデルの作成
+            mat, score = test_model(model, test_set)    #成績値の作成
             filename = parname+"_"+str(num_round)+".txt"
             with open("/Users/satoushoutaakira/Documents/Result/"+filename, "w") as f:
                 f.write("学習回数:"+str(num_round)+"/n")

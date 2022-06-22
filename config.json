@@ -1,7 +1,9 @@
 [
   {
     "path_ori_db" : "/Users/satoushoutaakira/Documents/Database_Name.xlsx",
-    "path_to_csv" : "/Users/satoushoutaakira/Documents/Database_encoded.csv"
+    "path_db" : "/Users/satoushoutaakira/Documents/Database_Name.csv",
+    "path_to_csv" : "/Users/satoushoutaakira/Documents/Database_encoded.csv",
+    "path_result": "/Users/satoushoutaakira/Documents/result/"
   },
   {
     "param1": {"max_depth": 2, "eta": 0.5, "objective": "multi:softmax", "num_class": 3, "eval_metric": "mlogloss"},
