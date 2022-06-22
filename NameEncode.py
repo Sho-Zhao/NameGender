@@ -48,7 +48,7 @@ def NameEncoding(df_dec):
     return df
 
 if __name__ == "__main__":  #DBから名前を取り出してエンコードする前処理
-    file = config(0) #設定ファイル
-    df_dec = NameSpli(file["path_ori_db"]) #名前の取り出し
+#    file = config(0) #設定ファイル
+    df_dec = pd.read_csv("/Users/satoushoutaakira/Documents/Database_test2.csv", encoding="cp932") #名前の取り出し
     df = NameEncoding(df_dec)   #名前のエンコード
-    df.to_csv(file["path_to_csv"])  #前処理エンコード住みDB
+    df.to_csv("/Users/satoushoutaakira/Documents/Database_test3.csv")  #前処理エンコード住みDB

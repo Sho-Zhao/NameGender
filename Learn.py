@@ -45,7 +45,7 @@ def learn(train_set, param, num_round):
     evalist = [(dvalid, 'eval'), (dtrain, 'train')]
     bst = xgb.train(param, dtrain, num_round, evalist, early_stopping_rounds=5)
     print('Best Score:{0:.4f}, Iteratin:{1:d}, Ntree_Limit:{2:d}'.format(
-     bst.best_score, bst.best_iteration, bst.best_ntree_limit))
+    bst.best_score, bst.best_iteration, bst.best_ntree_limit))
 
     return bst
 
