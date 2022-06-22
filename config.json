@@ -2,5 +2,14 @@
   {
     "path_ori_db" : "/Users/satoushoutaakira/Documents/Database_Name.xlsx",
     "path_to_csv" : "/Users/satoushoutaakira/Documents/Database_encoded.csv"
+  },
+  {
+    "param1": {"max_depth": 2, "eta": 0.5, "objective": "multi:softmax", "num_class": 3, "eval_metric": "mlogloss"},
+    "param2": {"max_depth": 10, "eta": 0.5, "objective": "multi:softmax", "num_class": 3, "eval_metric": "mlogloss"},
+    "param3": {"max_depth": 20, "eta": 0.5, "objective": "multi:softmax", "num_class": 3, "eval_metric": "mlogloss"},
+    "param4":{"max_depth": 2, "eta": 0.25, "objective": "multi:softmax", "num_class": 3, "eval_metric": "mlogloss"},
+    "param5": {"max_depth": 2, "eta": 1, "objective": "multi:softmax", "num_class": 3, "eval_metric": "mlogloss"},
+    "param6": {"max_depth": 10, "eta": 1, "objective": "multi:softmax", "num_class": 3, "eval_metric": "mlogloss"},
+    "param7": {"max_depth": 20, "eta": 0.25, "objective": "multi:softmax", "num_class": 3, "eval_metric": "mlogloss"}
   }
 ]
