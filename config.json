@@ -13,5 +13,8 @@
     "param5": {"max_depth": 2, "eta": 1, "objective": "multi:softmax", "num_class": 3, "eval_metric": "mlogloss"},
     "param6": {"max_depth": 10, "eta": 1, "objective": "multi:softmax", "num_class": 3, "eval_metric": "mlogloss"},
     "param7": {"max_depth": 20, "eta": 0.25, "objective": "multi:softmax", "num_class": 3, "eval_metric": "mlogloss"}
+  },
+  {
+    "path_db_pred": "/Users/satoushoutaakira/Documents/Pred_name.csv"
   }
 ]

@@ -12,14 +12,16 @@ class NameGender:
     def __init__(self):
         self.file = config(0)
         self.param = config(1)
+        self.file_pred = config(2)
         self.X_col = ["Name10", "Name11", "Name20", "Name21", "Name30", "Name31"]
         self.y_col = ["Gender"]
-        self.df = pd.read_csv(self.file["path_db"], encoding="cp932")
+        self.df = None
         self.train_set = None
         self.test_set = None
         self.bst = None
+        self.gender = "未判定"
 
-    def NameSplit(self):
+    def _NameSplit(self):
         """
         self.df の名前を分割してName1, Name2, Name3, Genderにする。
         :return: self.dfが変化
@@ -49,7 +51,7 @@ class NameGender:
         self.df = self.df[["Name1", "Name2", "Name3", "Gender"]]
         self.df = self.df.reset_index(drop=True)
 
-    def NameEncode(self):
+    def _NameEncode(self):
         """
         :param df_dec: 名前をエンコードする前のdfもしくはcsvファイルパス
         :return: エンコード済みのdf
@@ -73,6 +75,11 @@ class NameGender:
         :param num_round:学習回数を入力
         :return:self.bstを学習済モデルにする
         """
+        self.df = pd.read_csv(self.file["path_db"], encoding="cp932")
+
+        self._NameSplit()
+        self._NameEncode()
+
         #訓練セットとテストセットの分割
         self.train_set, self.test_set = split_test(self.df)
 
@@ -103,3 +110,27 @@ class NameGender:
 
     def save_model(self):
         pickle.dump(self.bst, open(self.file["path_result"] + "model.pickle", "wb"))
+
+    def predict_gender(self, pred_name):
+        """
+        predictモード　入力された名前から性別をだす
+        :param pred_name: 性別が知りたい名前
+        :return: 性別
+        """
+        #入力された名前をdf化
+        self.df = pd.DataFrame(data={
+            "Name": [pred_name],
+            "Gender": [0]
+        })
+
+        #名前の分割とエンコード
+        self._NameSplit()
+        self._NameEncode()
+
+        X_pred = xgb.DMatrix(self.df[self.X_col])
+        load_model = pickle.load(open(self.file["path_result"]+"model.pickle", "rb"))
+        y_pred = load_model.predict(X_pred)
+        if y_pred == 0:
+            self.gender = "男性"
+        elif y_pred == 1:
+            self.gender = "女性"

@@ -13,15 +13,20 @@ if __name__ == "__main__":
     command = input("学習:Learn, 判定：main >>")
 
     if command == "Learn":
-        nage.NameSplit()
-        nage.NameEncode()
         nage.learn("param6", 100)
         nage.test_model()
         nage.save_model()
 
     elif command == "main":
-        print("判定を作成中")
-        #load_model = pickle.load(open(file["path_result"]+"model.pickle", "rb"))
+        pred_name = input("あなたのお名前は？")
+        nage.predict_gender(pred_name)
+        print(pred_name)
+        print(nage.gender)
 
+    elif command == "test": #100回テスト用
+        pred_name = "将太朗"
+        for i in range(100):
+            nage.predict_gender(pred_name)
+            print(nage.gender)
     else:
         print("Command error!")
