@@ -2,7 +2,7 @@
 
 使用するには下記ライブラリをインストールします。
 
-pip install pandas
-pip install sklearn
-pip install xgb
-pip install django
+pip install pandas <br>
+pip install sklearn <br>
+pip install xgb <br>
+pip install django <br>
